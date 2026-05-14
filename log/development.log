@@ -1,0 +1,1686 @@
+  [1m[35mSQL (0.6ms)[0m  [1m[35mSET search_path TO public /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (2918.2ms)[0m  [1m[35mCREATE DATABASE "restaurant_reservation_system_development" ENCODING = 'unicode' /*application='RestaurantReservationSystem'*/[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[35mSET search_path TO public /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (2071.3ms)[0m  [1m[35mCREATE DATABASE "restaurant_reservation_system_test" ENCODING = 'unicode' /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (25.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (8.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT pg_try_advisory_lock(476229753596066715) /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (2.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-05-03 18:18:17.874131', '2026-05-03 18:18:17.874135') RETURNING "key" /*application='RestaurantReservationSystem'*/[0m
+Migrating to CreateUsers (20260503181541)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (17.7ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "username" character varying NOT NULL, "password_digest" character varying NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username") /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260503181541') RETURNING "version" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+Migrating to CreateTables (20260503181554)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (8.2ms)[0m  [1m[35mCREATE TABLE "tables" ("id" bigserial primary key, "table_number" integer, "capacity" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260503181554') RETURNING "version" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+Migrating to CreateReservations (20260503181600)
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (16.3ms)[0m  [1m[35mCREATE TABLE "reservations" ("id" bigserial primary key, "user_id" bigint NOT NULL, "table_id" bigint NOT NULL, "date" date NOT NULL, "time_slot" character varying NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_48a92fce51"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_23ce71128d"
+FOREIGN KEY ("table_id")
+  REFERENCES "tables" ("id")
+) /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE INDEX "index_reservations_on_user_id" ON "reservations" ("user_id") /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE INDEX "index_reservations_on_table_id" ON "reservations" ("table_id") /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_reservations_on_table_id_and_date_and_time_slot" ON "reservations" ("table_id", "date", "time_slot") /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260503181600') RETURNING "version" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(476229753596066715) /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[35mSET search_path TO public /*application='RestaurantReservationSystem'*/[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[35mSET search_path TO "$user", public /*application='RestaurantReservationSystem'*/[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[35mSET search_path TO public /*application='RestaurantReservationSystem'*/[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mSET search_path TO "$user", public /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mUser Create (2.7ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "created_at", "updated_at") VALUES ('vivek', '$2a$12$6NxRnE.GE2mrDWuekePmDuFm6rEEYf3Rcya4nvsEs96btZxMj6fXa', '2026-05-03 18:18:30.617967', '2026-05-03 18:18:30.617967') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."table_number" = 1 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "tables" WHERE "tables"."table_number" = 1 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Create (1.2ms)[0m  [1m[32mINSERT INTO "tables" ("table_number", "capacity", "created_at", "updated_at") VALUES (1, 2, '2026-05-03 18:18:30.668356', '2026-05-03 18:18:30.668356') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Load (0.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."table_number" = 2 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Exists? (4.4ms)[0m  [1m[34mSELECT 1 AS one FROM "tables" WHERE "tables"."table_number" = 2 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Create (0.3ms)[0m  [1m[32mINSERT INTO "tables" ("table_number", "capacity", "created_at", "updated_at") VALUES (2, 4, '2026-05-03 18:18:30.687819', '2026-05-03 18:18:30.687819') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Load (0.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."table_number" = 3 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Exists? (4.6ms)[0m  [1m[34mSELECT 1 AS one FROM "tables" WHERE "tables"."table_number" = 3 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Create (0.4ms)[0m  [1m[32mINSERT INTO "tables" ("table_number", "capacity", "created_at", "updated_at") VALUES (3, 4, '2026-05-03 18:18:30.706400', '2026-05-03 18:18:30.706400') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Load (0.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."table_number" = 4 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Exists? (4.5ms)[0m  [1m[34mSELECT 1 AS one FROM "tables" WHERE "tables"."table_number" = 4 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Create (0.4ms)[0m  [1m[32mINSERT INTO "tables" ("table_number", "capacity", "created_at", "updated_at") VALUES (4, 6, '2026-05-03 18:18:30.723687', '2026-05-03 18:18:30.723687') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Load (0.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."table_number" = 5 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Exists? (7.9ms)[0m  [1m[34mSELECT 1 AS one FROM "tables" WHERE "tables"."table_number" = 5 LIMIT 1 /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Create (0.3ms)[0m  [1m[32mINSERT INTO "tables" ("table_number", "capacity", "created_at", "updated_at") VALUES (5, 8, '2026-05-03 18:18:30.744655', '2026-05-03 18:18:30.744655') RETURNING "id" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mUser Count (165.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" /*application='RestaurantReservationSystem'*/[0m
+  [1m[36mTable Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*application='RestaurantReservationSystem'*/[0m
+Started GET "/" for 127.0.0.1 at 2026-05-03 23:49:20 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (2.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 179.8ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 241.3ms | GC: 0.0ms)
+Completed 200 OK in 1499ms (Views: 468.1ms | ActiveRecord: 46.4ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-03 23:49:24 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/login" for 127.0.0.1 at 2026-05-03 23:49:37 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek@library.com", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (2.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek@library.com' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 3.3ms | GC: 0.0ms)
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 14.9ms | GC: 0.0ms)
+Completed 422 Unprocessable Content in 45ms (Views: 16.1ms | ActiveRecord: 3.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2026-05-03 23:52:27 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 828ms (ActiveRecord: 14.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-03 23:52:28 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (7.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (5.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-03') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 37.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 41.5ms | GC: 0.0ms)
+Completed 200 OK in 610ms (Views: 56.0ms | ActiveRecord: 20.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-03 23:52:45 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 238.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 241.8ms | GC: 0.0ms)
+Completed 200 OK in 478ms (Views: 259.4ms | ActiveRecord: 6.8ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-03 23:53:23 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "1", "date" => "2026-05-04", "time_slot" => "17-18"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (11.7ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 1 AND "reservations"."date" = '2026-05-04' AND "reservations"."time_slot" = '17-18' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Create (7.3ms)[0m  [1m[32mINSERT INTO "reservations" ("user_id", "table_id", "date", "time_slot", "created_at", "updated_at") VALUES (1, 1, '2026-05-04', '17-18', '2026-05-03 18:23:23.399023', '2026-05-03 18:23:23.399023') RETURNING "id" /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[35mCOMMIT /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:17:in 'ReservationsController#create'
+Completed 302 Found in 97ms (ActiveRecord: 24.7ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-03 23:53:23 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.8ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (2.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 988.7ms | GC: 0.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 994.7ms | GC: 0.6ms)
+Completed 200 OK in 1020ms (Views: 992.1ms | ActiveRecord: 6.6ms (4 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-03 23:53:29 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 17.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 24.1ms | GC: 0.0ms)
+Completed 200 OK in 54ms (Views: 28.0ms | ActiveRecord: 2.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-03 23:53:45 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "4", "date" => "2026-05-08", "time_slot" => "13-14"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (16.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 4 AND "reservations"."date" = '2026-05-08' AND "reservations"."time_slot" = '13-14' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Create (1.5ms)[0m  [1m[32mINSERT INTO "reservations" ("user_id", "table_id", "date", "time_slot", "created_at", "updated_at") VALUES (1, 4, '2026-05-08', '13-14', '2026-05-03 18:23:45.458212', '2026-05-03 18:23:45.458212') RETURNING "id" /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[35mCOMMIT /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:17:in 'ReservationsController#create'
+Completed 302 Found in 117ms (ActiveRecord: 24.6ms (4 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-03 23:53:45 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 34.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.1ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 37.4ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-03 23:53:49 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-03') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-03') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 50.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 53.9ms | GC: 0.0ms)
+Completed 200 OK in 84ms (Views: 52.4ms | ActiveRecord: 7.1ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-03 23:53:54 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (0.7ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 30.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 34.5ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 34.9ms | ActiveRecord: 3.3ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-03 23:53:57 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 11.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.9ms | GC: 0.0ms)
+Completed 200 OK in 63ms (Views: 38.9ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new?table_id=5" for 127.0.0.1 at 2026-05-03 23:54:05 +0530
+Processing by ReservationsController#new as HTML
+  Parameters: {"table_id" => "5"}
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 11.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.5ms | GC: 0.0ms)
+Completed 200 OK in 38ms (Views: 15.6ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-03 23:54:26 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "5", "date" => "2026-05-10", "time_slot" => "15-16"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (10.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 5 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 5 AND "reservations"."date" = '2026-05-10' AND "reservations"."time_slot" = '15-16' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Create (1.3ms)[0m  [1m[32mINSERT INTO "reservations" ("user_id", "table_id", "date", "time_slot", "created_at", "updated_at") VALUES (1, 5, '2026-05-10', '15-16', '2026-05-03 18:24:26.738469', '2026-05-03 18:24:26.738469') RETURNING "id" /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:17:in 'ReservationsController#create'
+Completed 302 Found in 68ms (ActiveRecord: 14.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-03 23:54:26 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.7ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 29.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.8ms | GC: 0.0ms)
+Completed 200 OK in 52ms (Views: 33.2ms | ActiveRecord: 3.8ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/logout" for 127.0.0.1 at 2026-05-03 23:54:31 +0530
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Redirected to http://127.0.0.1:3000/login
+↳ app/controllers/sessions_controller.rb:19:in 'SessionsController#destroy'
+Completed 302 Found in 12ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2026-05-03 23:54:31 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 4.5ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 14.9ms | GC: 0.0ms)
+Completed 200 OK in 37ms (Views: 17.5ms | ActiveRecord: 1.2ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2026-05-03 23:55:48 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 868ms (ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-03 23:55:49 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-03') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (0.8ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-03') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 5 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 51.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 55.0ms | GC: 0.0ms)
+Completed 200 OK in 86ms (Views: 51.8ms | ActiveRecord: 8.6ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-03 23:55:57 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 12.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 16.3ms | GC: 0.0ms)
+Completed 200 OK in 39ms (Views: 17.8ms | ActiveRecord: 2.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-03 23:56:10 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "1", "date" => "2026-05-04", "time_slot" => "15-16"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (10.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 1 AND "reservations"."date" = '2026-05-04' AND "reservations"."time_slot" = '15-16' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Create (1.5ms)[0m  [1m[32mINSERT INTO "reservations" ("user_id", "table_id", "date", "time_slot", "created_at", "updated_at") VALUES (1, 1, '2026-05-04', '15-16', '2026-05-03 18:26:10.911239', '2026-05-03 18:26:10.911239') RETURNING "id" /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:17:in 'ReservationsController#create'
+Completed 302 Found in 77ms (ActiveRecord: 15.7ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-03 23:56:10 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 32.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 36.4ms | GC: 0.0ms)
+Completed 200 OK in 57ms (Views: 36.1ms | ActiveRecord: 5.0ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-03 23:56:28 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 12.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.0ms | GC: 0.0ms)
+Completed 200 OK in 44ms (Views: 18.7ms | ActiveRecord: 2.5ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-03 23:56:45 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "1", "date" => "2026-05-04", "time_slot" => "17-18"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (11.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 1 AND "reservations"."date" = '2026-05-04' AND "reservations"."time_slot" = '17-18' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mROLLBACK /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 15.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.7ms | GC: 0.0ms)
+Completed 422 Unprocessable Content in 84ms (Views: 21.5ms | ActiveRecord: 15.4ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/logout" for 127.0.0.1 at 2026-05-03 23:57:06 +0530
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Redirected to http://127.0.0.1:3000/login
+↳ app/controllers/sessions_controller.rb:19:in 'SessionsController#destroy'
+Completed 302 Found in 12ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2026-05-03 23:57:06 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 2.9ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 49.1ms | GC: 0.2ms)
+Completed 200 OK in 69ms (Views: 51.6ms | ActiveRecord: 1.1ms (2 queries, 1 cached) | GC: 0.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-04 07:42:50 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (9.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 186.5ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 243.7ms | GC: 0.0ms)
+Completed 200 OK in 2074ms (Views: 563.1ms | ActiveRecord: 84.3ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-04 07:42:55 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 7.6ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 8.8ms | ActiveRecord: 0.8ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-04 07:42:56 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/" for 127.0.0.1 at 2026-05-04 07:43:17 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 6.4ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 15.4ms | GC: 0.0ms)
+Completed 200 OK in 33ms (Views: 18.6ms | ActiveRecord: 0.9ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-04 07:43:17 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/login" for 127.0.0.1 at 2026-05-04 07:43:22 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 884ms (ActiveRecord: 17.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2026-05-04 07:43:23 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 813ms (ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 07:43:24 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (20.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (5.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (2.5ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 319.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 323.2ms | GC: 0.0ms)
+Completed 200 OK in 1021ms (Views: 323.5ms | ActiveRecord: 44.2ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-04 16:16:29 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (6.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 188.3ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 224.9ms | GC: 0.0ms)
+Completed 200 OK in 1750ms (Views: 486.5ms | ActiveRecord: 94.1ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-04 16:16:48 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 5.3ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 15.2ms | GC: 0.0ms)
+Completed 200 OK in 40ms (Views: 17.7ms | ActiveRecord: 1.3ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-04 16:16:48 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/login" for 127.0.0.1 at 2026-05-04 16:17:50 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 719ms (ActiveRecord: 15.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:17:51 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (13.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (3.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.7ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.7ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 270.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 275.2ms | GC: 0.0ms)
+Completed 200 OK in 825ms (Views: 278.8ms | ActiveRecord: 29.2ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-04 16:17:59 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 229.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 233.4ms | GC: 0.0ms)
+Completed 200 OK in 454ms (Views: 252.0ms | ActiveRecord: 2.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:18:12 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 344.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 352.9ms | GC: 0.0ms)
+Completed 200 OK in 482ms (Views: 352.4ms | ActiveRecord: 4.4ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-04 16:18:26 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 18.2ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 22.1ms | GC: 0.2ms)
+Completed 200 OK in 130ms (Views: 39.8ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:18:38 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 33.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.2ms | GC: 0.0ms)
+Completed 200 OK in 58ms (Views: 37.3ms | ActiveRecord: 4.4ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-04 16:18:58 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 10.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.5ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 16.9ms | ActiveRecord: 1.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:19:06 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 46.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 50.0ms | GC: 0.0ms)
+Completed 200 OK in 81ms (Views: 47.3ms | ActiveRecord: 6.3ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:19:22 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 33.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 36.8ms | GC: 0.0ms)
+Completed 200 OK in 64ms (Views: 41.4ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:19:55 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.5ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 50.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 60.2ms | GC: 0.0ms)
+Completed 200 OK in 92ms (Views: 56.9ms | ActiveRecord: 8.1ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-04 16:19:57 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (2.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 12.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.0ms | GC: 0.0ms)
+Completed 200 OK in 35ms (Views: 17.7ms | ActiveRecord: 3.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/logout" for 127.0.0.1 at 2026-05-04 16:20:00 +0530
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Redirected to http://127.0.0.1:3000/login
+↳ app/controllers/sessions_controller.rb:19:in 'SessionsController#destroy'
+Completed 302 Found in 15ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2026-05-04 16:20:00 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 3.9ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 15.9ms | GC: 0.0ms)
+Completed 200 OK in 34ms (Views: 18.2ms | ActiveRecord: 1.1ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2026-05-04 16:20:03 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 788ms (ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:20:04 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 56.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 60.8ms | GC: 0.0ms)
+Completed 200 OK in 87ms (Views: 57.3ms | ActiveRecord: 7.9ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:20:14 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mCACHE Table Load (0.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 50.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 54.9ms | GC: 0.0ms)
+Completed 200 OK in 84ms (Views: 52.4ms | ActiveRecord: 7.3ms (8 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-04 16:20:52 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 13.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.1ms | GC: 0.0ms)
+Completed 200 OK in 37ms (Views: 18.8ms | ActiveRecord: 1.7ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:20:54 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 34.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.5ms | GC: 0.0ms)
+Completed 200 OK in 60ms (Views: 37.4ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/reservations/4" for 127.0.0.1 at 2026-05-04 16:21:23 +0530
+Processing by ReservationsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "id" => "4"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Load (1.7ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND "reservations"."id" = 4 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:25:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mReservation Destroy (14.1ms)[0m  [1m[31mDELETE FROM "reservations" WHERE "reservations"."id" = 4 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[35mCOMMIT /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:27:in 'ReservationsController#destroy'
+Completed 302 Found in 62ms (ActiveRecord: 21.4ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:21:23 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.4ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 34.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.9ms | GC: 0.0ms)
+Completed 200 OK in 67ms (Views: 38.8ms | ActiveRecord: 4.6ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2026-05-04 16:27:38 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (8.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 1089ms (ActiveRecord: 51.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:27:39 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (6.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (3.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.6ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (2.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 5 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 59.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 64.1ms | GC: 0.0ms)
+Completed 200 OK in 106ms (Views: 57.1ms | ActiveRecord: 19.1ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-04 16:27:49 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.6ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 15.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 23.0ms | GC: 0.0ms)
+Completed 200 OK in 49ms (Views: 24.4ms | ActiveRecord: 2.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/reservations" for 127.0.0.1 at 2026-05-04 16:28:16 +0530
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "reservation" => {"table_id" => "5", "date" => "2026-05-25", "time_slot" => "17-18"}, "commit" => "Confirm Booking"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTable Load (13.7ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 5 LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."table_id" = 5 AND "reservations"."date" = '2026-05-25' AND "reservations"."time_slot" = '17-18' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mReservation Create (18.5ms)[0m  [1m[32mINSERT INTO "reservations" ("user_id", "table_id", "date", "time_slot", "created_at", "updated_at") VALUES (1, 5, '2026-05-25', '17-18', '2026-05-04 10:58:16.226636', '2026-05-04 10:58:16.226636') RETURNING "id" /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+  [1m[36mTRANSACTION (2.8ms)[0m  [1m[35mCOMMIT /*action='create',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:16:in 'ReservationsController#create'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:17:in 'ReservationsController#create'
+Completed 302 Found in 110ms (ActiveRecord: 38.9ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:28:16 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 32.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 37.5ms | GC: 0.0ms)
+Completed 200 OK in 57ms (Views: 36.2ms | ActiveRecord: 4.6ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/reservations/5" for 127.0.0.1 at 2026-05-04 16:28:34 +0530
+Processing by ReservationsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "id" => "5"}
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND "reservations"."id" = 5 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:25:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mReservation Destroy (10.5ms)[0m  [1m[31mDELETE FROM "reservations" WHERE "reservations"."id" = 5 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:27:in 'ReservationsController#destroy'
+Completed 302 Found in 56ms (ActiveRecord: 13.9ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:28:35 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 33.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.6ms | GC: 0.0ms)
+Completed 200 OK in 108ms (Views: 38.2ms | ActiveRecord: 4.3ms (4 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-04 16:28:40 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 12.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.7ms | GC: 0.0ms)
+Completed 200 OK in 46ms (Views: 21.7ms | ActiveRecord: 2.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new?table_id=2" for 127.0.0.1 at 2026-05-04 16:29:45 +0530
+Processing by ReservationsController#new as HTML
+  Parameters: {"table_id" => "2"}
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 14.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.7ms | GC: 0.0ms)
+Completed 200 OK in 41ms (Views: 20.5ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-04 16:29:53 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-04') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 5 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 52.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 56.6ms | GC: 0.0ms)
+Completed 200 OK in 88ms (Views: 54.3ms | ActiveRecord: 8.2ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:29:58 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.4ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 35.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 40.2ms | GC: 0.0ms)
+Completed 200 OK in 61ms (Views: 39.6ms | ActiveRecord: 4.8ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:30:11 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (5, 4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 37.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 41.2ms | GC: 0.0ms)
+Completed 200 OK in 64ms (Views: 40.4ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/reservations/3" for 127.0.0.1 at 2026-05-04 16:30:19 +0530
+Processing by ReservationsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "id" => "3"}
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND "reservations"."id" = 3 LIMIT 1 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:25:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mReservation Destroy (11.1ms)[0m  [1m[31mDELETE FROM "reservations" WHERE "reservations"."id" = 3 /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT /*action='destroy',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/reservations_controller.rb:26:in 'ReservationsController#destroy'
+Redirected to http://127.0.0.1:3000/reservations
+↳ app/controllers/reservations_controller.rb:27:in 'ReservationsController#destroy'
+Completed 302 Found in 58ms (ActiveRecord: 14.8ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-04 16:30:19 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.3ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 38.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.8ms | GC: 0.0ms)
+Completed 200 OK in 75ms (Views: 42.9ms | ActiveRecord: 4.8ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-05 11:49:15 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (13.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RestaurantReservationSystem'*/[0m
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 231.5ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 304.5ms | GC: 0.0ms)
+Completed 200 OK in 2179ms (Views: 697.9ms | ActiveRecord: 74.2ms (2 queries, 1 cached) | GC: 0.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-05 11:49:20 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 2.2ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 14.5ms | GC: 0.0ms)
+Completed 200 OK in 38ms (Views: 18.3ms | ActiveRecord: 2.6ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-05 11:49:20 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 3.6ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 15.9ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 17.8ms | ActiveRecord: 1.4ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-05 11:49:24 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 5.9ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 14.3ms | GC: 0.0ms)
+Completed 200 OK in 38ms (Views: 16.8ms | ActiveRecord: 1.4ms (2 queries, 1 cached) | GC: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-05 11:49:24 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/login" for 127.0.0.1 at 2026-05-05 11:49:45 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]", "username" => "vivek", "password" => "[FILTERED]", "commit" => "Login"}
+  [1m[36mUser Load (4.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = 'vivek' LIMIT 1 /*action='create',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/sessions_controller.rb:7:in 'SessionsController#create'
+Redirected to http://127.0.0.1:3000/dashboard
+↳ app/controllers/sessions_controller.rb:10:in 'SessionsController#create'
+Completed 302 Found in 857ms (ActiveRecord: 22.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:49:46 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (21.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (5.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (3.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (2.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 293.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 299.0ms | GC: 0.0ms)
+Completed 200 OK in 969ms (Views: 298.6ms | ActiveRecord: 42.0ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-05 11:50:19 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 212.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 216.5ms | GC: 0.0ms)
+Completed 200 OK in 400ms (Views: 230.0ms | ActiveRecord: 2.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-05 11:50:45 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 11.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 16.0ms | GC: 0.0ms)
+Completed 200 OK in 106ms (Views: 30.4ms | ActiveRecord: 2.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:51:10 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.5ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 758.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 762.8ms | GC: 0.0ms)
+Completed 200 OK in 890ms (Views: 761.6ms | ActiveRecord: 5.3ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-05 11:51:37 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 9.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 13.3ms | GC: 0.0ms)
+Completed 200 OK in 82ms (Views: 14.6ms | ActiveRecord: 1.9ms (2 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:51:44 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.2ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 35.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 39.5ms | GC: 0.0ms)
+Completed 200 OK in 72ms (Views: 37.5ms | ActiveRecord: 6.9ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new" for 127.0.0.1 at 2026-05-05 11:51:49 +0530
+Processing by ReservationsController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 14.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.7ms | GC: 0.0ms)
+Completed 200 OK in 42ms (Views: 20.7ms | ActiveRecord: 2.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:51:53 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 34.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 38.7ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 38.3ms | ActiveRecord: 4.2ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:51:58 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 37.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.9ms | GC: 0.0ms)
+Completed 200 OK in 75ms (Views: 42.8ms | ActiveRecord: 6.4ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:52:32 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 29.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.7ms | GC: 0.0ms)
+Completed 200 OK in 64ms (Views: 31.3ms | ActiveRecord: 5.7ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:53:03 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 25.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 28.9ms | GC: 0.0ms)
+Completed 200 OK in 47ms (Views: 28.1ms | ActiveRecord: 3.8ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:53:30 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 34.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.0ms | GC: 0.0ms)
+Completed 200 OK in 73ms (Views: 41.6ms | ActiveRecord: 6.0ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-05 11:53:32 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 8.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.9ms | GC: 0.0ms)
+Completed 200 OK in 30ms (Views: 14.0ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:54:04 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (0.9ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.1ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 30.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 34.7ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 37.6ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:54:07 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (0.9ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 29.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.3ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 31.7ms | ActiveRecord: 5.4ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:54:09 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (0.7ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 25.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 28.4ms | GC: 0.0ms)
+Completed 200 OK in 45ms (Views: 28.3ms | ActiveRecord: 3.3ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:54:12 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (0.8ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.8ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 25.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 28.9ms | GC: 0.0ms)
+Completed 200 OK in 52ms (Views: 27.5ms | ActiveRecord: 4.6ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:54:14 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 32.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 37.6ms | GC: 0.0ms)
+Completed 200 OK in 58ms (Views: 36.9ms | ActiveRecord: 4.2ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:54:18 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 30.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 35.4ms | GC: 0.0ms)
+Completed 200 OK in 64ms (Views: 33.7ms | ActiveRecord: 6.8ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations" for 127.0.0.1 at 2026-05-05 11:54:20 +0530
+Processing by ReservationsController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mReservation Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:7
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 ORDER BY "reservations"."date" DESC, "reservations"."time_slot" DESC /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" IN (4, 1) /*action='index',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/index.html.erb:22:in 'Enumerable#each_with_index'
+  Rendered reservations/index.html.erb within layouts/application (Duration: 26.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 30.5ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 29.3ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboard" for 127.0.0.1 at 2026-05-05 11:54:22 +0530
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  [1m[36mReservation Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/controllers/dashboard_controller.rb:5:in 'DashboardController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  [1m[36mTable Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tables" /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:23
+  [1m[36mReservation Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:40
+  [1m[36mReservation Load (1.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."user_id" = 1 AND (date >= '2026-05-05') ORDER BY "reservations"."date" ASC, "reservations"."time_slot" ASC LIMIT 3 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:52
+  [1m[36mTable Load (0.9ms)[0m  [1m[34mSELECT "tables".* FROM "tables" WHERE "tables"."id" = 4 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='dashboard'*/[0m
+  ↳ app/views/dashboard/index.html.erb:54
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 31.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 35.2ms | GC: 0.0ms)
+Completed 200 OK in 61ms (Views: 33.2ms | ActiveRecord: 6.8ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/tables" for 127.0.0.1 at 2026-05-05 11:54:24 +0530
+Processing by TablesController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tables/index.html.erb within layouts/application
+  [1m[36mTable Load (1.0ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='index',application='RestaurantReservationSystem',controller='tables'*/[0m
+  ↳ app/views/tables/index.html.erb:8
+  Rendered tables/index.html.erb within layouts/application (Duration: 8.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.1ms | GC: 0.0ms)
+Completed 200 OK in 28ms (Views: 13.3ms | ActiveRecord: 2.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/reservations/new?table_id=4" for 127.0.0.1 at 2026-05-05 11:54:29 +0530
+Processing by ReservationsController#new as HTML
+  Parameters: {"table_id" => "4"}
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering reservations/new.html.erb within layouts/application
+  [1m[36mTable Load (1.2ms)[0m  [1m[34mSELECT "tables".* FROM "tables" ORDER BY "tables"."table_number" ASC /*action='new',application='RestaurantReservationSystem',controller='reservations'*/[0m
+  ↳ app/views/reservations/new.html.erb:22:in 'Enumerable#map'
+  Rendered reservations/new.html.erb within layouts/application (Duration: 11.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.7ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 16.9ms | ActiveRecord: 2.5ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/logout" for 127.0.0.1 at 2026-05-05 11:55:31 +0530
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Redirected to http://127.0.0.1:3000/login
+↳ app/controllers/sessions_controller.rb:19:in 'SessionsController#destroy'
+Completed 302 Found in 12ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2026-05-05 11:55:31 +0530
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1 /*action='new',application='RestaurantReservationSystem',controller='sessions'*/[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 4.2ms | GC: 0.0ms)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  ↳ app/controllers/application_controller.rb:7:in 'ApplicationController#current_user'
+  Rendered layout layouts/application.html.erb (Duration: 15.6ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 18.6ms | ActiveRecord: 1.4ms (2 queries, 1 cached) | GC: 0.0ms)
+
+

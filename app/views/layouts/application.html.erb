@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Restaurant Reservation System</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag "application" %>
+  </head>
+  <body>
+    <% if logged_in? %>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="<%= dashboard_path %>">
+            <i class="bi bi-fork-knife"></i> ReserveTable
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <%= link_to "Dashboard", dashboard_path, class: "nav-link #{controller_name == 'dashboard' ? 'active' : ''}" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Tables", tables_path, class: "nav-link #{controller_name == 'tables' ? 'active' : ''}" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "My Reservations", reservations_path, class: "nav-link #{controller_name == 'reservations' ? 'active' : ''}" %>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <span class="nav-link text-light"><i class="bi bi-person-circle"></i> <%= current_user.username %></span>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Logout", logout_path, method: :delete, class: "btn btn-outline-light btn-sm ms-2 my-1" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <% end %>
+
+    <div class="container mt-4">
+      <% if notice %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

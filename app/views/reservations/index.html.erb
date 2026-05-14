@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>My Reservations</h2>
+  <%= link_to "New Booking", new_reservation_path, class: "btn btn-dark" %>
+</div>
+
+<% if @reservations.any? %>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Table</th>
+          <th>Capacity</th>
+          <th>Date</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @reservations.each_with_index do |r, i| %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td>Table #<%= r.table.table_number %></td>
+            <td><%= r.table.capacity %> guests</td>
+            <td><%= r.date.strftime("%B %d, %Y") %></td>
+            <td><%= r.time_slot.gsub('-', ':00 - ') %>:00</td>
+            <td>
+              <% if r.date >= Date.today %>
+                <span class="badge bg-success">Upcoming</span>
+              <% else %>
+                <span class="badge bg-secondary">Past</span>
+              <% end %>
+            </td>
+            <td>
+              <% if r.date >= Date.today %>
+                <%= button_to "Cancel", reservation_path(r), method: :delete,
+                      class: "btn btn-outline-danger btn-sm",
+                      data: { turbo_confirm: "Cancel this reservation?" } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    You have no reservations yet. <%= link_to "Book a table!", new_reservation_path %>
+  </div>
+<% end %>
